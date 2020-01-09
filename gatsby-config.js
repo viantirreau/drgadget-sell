@@ -4,21 +4,17 @@ require('dotenv').config({
 
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby starter ecommerce',
-    author: 'Parminder Sanghera',
-    description: 'A starter e-commerce site made using Gatsby.',
-    siteUrl: 'https://parmsang.github.io/gatsby-starter-ecommerce/',
+    title: 'Dr. Gadget Chile',
+    author: 'Víctor Tirreau',
+    description:
+      'A smartphone trading site made using Gatsby, inspired from https://parmsang.github.io/gatsby-starter-ecommerce/ by Parminder Sanghera',
+    siteUrl: 'https://drgadgetchile.cl',
   },
-  pathPrefix: '/gatsby-starter-ecommerce',
+  // pathPrefix: '/gatsby-starter-ecommerce',
   plugins: [
-    {
-      resolve: '@moltin/gatsby-source-moltin',
-      options: {
-        client_id:
-          process.env.MOLTIN_CLIENT_ID ||
-          'EdP3Gi1agyUF3yFS7Ngm8iyodLgbSR3wY4ceoJl0d2',
-      },
-    },
+    `gatsby-plugin-feed-mdx`,
+    // `gatsby-plugin-netlify-cms`,
+    `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -33,8 +29,15 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'data',
+        path: `${__dirname}/src/data`,
+      },
+    },
+    `gatsby-transformer-csv`,
     `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
@@ -71,5 +74,42 @@ module.exports = {
     },
     `gatsby-plugin-offline`,
     `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        extensions: ['.mdx', '.md'],
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 590,
+            },
+          },
+          {
+            resolve: `gatsby-remark-responsive-iframe`,
+            options: {
+              wrapperStyle: `margin-bottom: 1.0725rem`,
+            },
+          },
+          {
+            resolve: `gatsby-remark-vscode`,
+          },
+          {
+            resolve: `gatsby-remark-copy-linked-files`,
+          },
+          {
+            resolve: `gatsby-remark-smartypants`,
+          },
+        ],
+      },
+    },
+    {
+      resolve: '@moltin/gatsby-source-moltin',
+      options: {
+        client_id:
+          process.env.MOLTIN_CLIENT_ID ||
+          'EdP3Gi1agyUF3yFS7Ngm8iyodLgbSR3wY4ceoJl0d2',
+      },
+    },
   ],
 }

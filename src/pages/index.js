@@ -36,8 +36,19 @@ const StoreIndex = ({location}) => {
                 sizes(maxWidth: 600) {
                   ...GatsbyImageSharpSizes
                 }
+                fluid {
+                  ...GatsbyImageSharpFluid_tracedSVG
+                }
               }
             }
+          }
+        }
+      }
+      allSlugsCsv {
+        edges {
+          node {
+            model
+            slug
           }
         }
       }
@@ -46,7 +57,9 @@ const StoreIndex = ({location}) => {
 
   const siteTitle = get(data, 'site.siteMetadata.title')
   const products = get(data, 'allMoltinProduct.edges')
-  const filterProductsWithoutImages = products.filter(v => v.node.mainImageHref)
+  const csv = get(data, 'allSlugsCsv.edges')
+  console.log(csv)
+
   return (
     <Layout location={location}>
       <SEO title={siteTitle} />
@@ -67,7 +80,7 @@ const StoreIndex = ({location}) => {
           <Image src={logo} alt="logo" />
         </Header.Content>
       </Header>
-      <ProductList products={filterProductsWithoutImages} />
+      <ProductList products={products} />
     </Layout>
   )
 }

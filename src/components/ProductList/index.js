@@ -24,10 +24,8 @@ const mapProductsToItems = products =>
         </Card.Meta>
       ),
     }
-    console.log(willReturn)
     return willReturn
   })
-console.log('HOLAAA')
 export default ({products}) => (
   <Card.Group items={mapProductsToItems(products)} itemsPerRow={2} />
 )

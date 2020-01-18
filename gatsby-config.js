@@ -12,8 +12,6 @@ module.exports = {
   },
   // pathPrefix: '/gatsby-starter-ecommerce',
   plugins: [
-    `gatsby-plugin-feed-mdx`,
-    // `gatsby-plugin-netlify-cms`,
     `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-source-filesystem`,

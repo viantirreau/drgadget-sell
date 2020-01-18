@@ -88,7 +88,6 @@ const MobileMenu = ({location: {pathname}}) => {
           active={activeItem === withPrefix('/')}
         >
           <Logo />
-          Store
         </Menu.Item>
         <Menu.Menu position="right">
           <Menu.Item

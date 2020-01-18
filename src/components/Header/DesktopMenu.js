@@ -20,7 +20,6 @@ const DesktopMenu = ({location: {pathname}}) => {
           header
         >
           <Logo />
-          Starter Store
         </Menu.Item>
         <Menu.Menu position="right">
           <Menu.Item

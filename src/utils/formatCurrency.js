@@ -1,4 +1,4 @@
-export default currencyFormat = amount => {
+const currencyFormat = amount => {
   amount += '' // por si pasan un numero en vez de un string
   amount = parseFloat(amount.replace(/[^0-9\.]/g, '')) // elimino cualquier cosa que no sea numero o punto
 
@@ -16,3 +16,4 @@ export default currencyFormat = amount => {
 
   return '$' + amount_parts.join(',')
 }
+export default currencyFormat

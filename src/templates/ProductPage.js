@@ -1,24 +1,40 @@
 /* eslint-disable */
 import React from 'react'
 import {graphql} from 'gatsby'
+import ProductSummary from '../components/ProductSummary'
+import Layout from '../components/Layout'
 /*
 import SEO from '../components/SEO'
 import get from 'lodash/get'
 import ProductSummary from '../components/ProductSummary'
 import ProductAttributes from '../components/ProductAttributes'
-import Layout from '../components/Layout'
 */
 
 const ProductPageTemplate = props => {
   const defects = props.data.defectsCsv
   const versions = props.data.allPricesCsv.edges
-  return <div></div>
+  const storageCapacities = versions.map(edge => edge.node.storage)
+  const maxPrice = Math.max(...versions.map(edge => edge.node.max))
+  const images = props.data.allFile.edges
+  const firstImage = images[0].node
+  console.log(props)
+  const product = {
+    name: props.pageContext.model,
+    maxPrice,
+    mainImage: firstImage,
+  }
+
+  return (
+    <Layout location={props.location}>
+      <ProductSummary {...product}></ProductSummary>
+    </Layout>
+  )
 }
 
 export default ProductPageTemplate
 
 export const pageQuery = graphql`
-  query ProductsQuery($model: String!) {
+  query ProductsQuery($model: String!, $slug: String!) {
     allPricesCsv(filter: {model: {eq: $model}}) {
       edges {
         node {
@@ -39,6 +55,21 @@ export const pageQuery = graphql`
       glass
       home
       screen
+    }
+    allFile(
+      filter: {relativeDirectory: {eq: $slug}, sourceInstanceName: {eq: "img"}}
+    ) {
+      edges {
+        node {
+          name
+          publicURL
+          childImageSharp {
+            fluid {
+              ...GatsbyImageSharpFluid
+            }
+          }
+        }
+      }
     }
   }
 `

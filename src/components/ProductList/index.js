@@ -3,24 +3,31 @@ import React from 'react'
 import {Card, Image} from 'semantic-ui-react'
 import Img from 'gatsby-image'
 import {Link} from 'gatsby'
+import formatCurrency from '../../utils/formatCurrency'
 
 const mapProductsToItems = products =>
-  products.map(({node: {name, id, meta, mainImage}}) => {
-    const price = meta.display_price.with_tax.formatted || null
-    return {
+  products.map(({node: {slug, image, name, maxPrice}}) => {
+    const price = maxPrice || null
+    const willReturn = {
       as: Link,
-      to: `/product/${id}/`,
-      childKey: id,
+      to: `/${slug}/`,
+      childKey: slug,
       image: (
         <Image>
-          <Img fluid={mainImage.childImageSharp.fluid} alt={name} />
+          <Img fluid={image.fluid} alt={name} />
         </Image>
       ),
       header: name,
-      meta: <Card.Meta style={{color: 'dimgray'}}>{price}</Card.Meta>,
+      meta: (
+        <Card.Meta style={{color: 'dimgray'}}>
+          {`Hasta ${formatCurrency(price)}`}
+        </Card.Meta>
+      ),
     }
+    console.log(willReturn)
+    return willReturn
   })
-
+console.log('HOLAAA')
 export default ({products}) => (
-  <Card.Group items={mapProductsToItems(products)} itemsPerRow={2} stackable />
+  <Card.Group items={mapProductsToItems(products)} itemsPerRow={2} />
 )

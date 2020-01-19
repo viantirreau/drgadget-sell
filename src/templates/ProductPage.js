@@ -3,6 +3,8 @@ import React from 'react'
 import {graphql} from 'gatsby'
 import ProductSummary from '../components/ProductSummary'
 import Layout from '../components/Layout'
+import ProductForm from '../components/ProductForm'
+
 /*
 import SEO from '../components/SEO'
 import get from 'lodash/get'
@@ -17,16 +19,21 @@ const ProductPageTemplate = props => {
   const maxPrice = Math.max(...versions.map(edge => edge.node.max))
   const images = props.data.allFile.edges
   const firstImage = images[0].node
-  console.log(props)
   const product = {
     name: props.pageContext.model,
     maxPrice,
     mainImage: firstImage,
   }
+  const productAttributes = {
+    defects,
+    versions,
+    storageCapacities,
+  }
 
   return (
     <Layout location={props.location}>
       <ProductSummary {...product}></ProductSummary>
+      <ProductForm {...productAttributes} />
     </Layout>
   )
 }

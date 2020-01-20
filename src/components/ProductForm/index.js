@@ -194,7 +194,7 @@ class ProductForm extends React.Component {
                          and the Transition is hidden and then unmounted. When it is
                          active again, the answers will remain the same as before.
                       */
-                      checked={defect in this.failures}
+                      checked={this.state.failuresArray.includes(defect)}
                     />
                   )
                 },
@@ -211,28 +211,28 @@ class ProductForm extends React.Component {
                 label="Se cayó al agua"
                 name="water"
                 onChange={this.handleFailureReasonsChange}
-                checked={'water' in this.failureReasons}
+                checked={this.state.failureReasonsArray.includes('water')}
                 key="water"
               />
               <Form.Checkbox
                 label="Se golpeó contra el suelo"
                 name="crash"
                 onChange={this.handleFailureReasonsChange}
-                checked={'crash' in this.failureReasons}
+                checked={this.state.failureReasonsArray.includes('crash')}
                 key="crash"
               />
               <Form.Checkbox
                 label="Mucho tiempo de uso"
                 name="usage"
                 onChange={this.handleFailureReasonsChange}
-                checked={'usage' in this.failureReasons}
+                checked={this.state.failureReasonsArray.includes('usage')}
                 key="usage"
               />
               <Form.Checkbox
                 label="Le pasó de la nada (en un momento estaba bien y luego comenzó a fallar)"
                 name="sudden"
                 onChange={this.handleFailureReasonsChange}
-                checked={'sudden' in this.failureReasons}
+                checked={this.state.failureReasonsArray.includes('sudden')}
                 key="sudden"
               />
             </Form.Field>

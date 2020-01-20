@@ -77,13 +77,5 @@ module.exports = {
     },
     `gatsby-plugin-offline`,
     `gatsby-plugin-react-helmet`,
-    {
-      resolve: '@moltin/gatsby-source-moltin',
-      options: {
-        client_id:
-          process.env.MOLTIN_CLIENT_ID ||
-          'EdP3Gi1agyUF3yFS7Ngm8iyodLgbSR3wY4ceoJl0d2',
-      },
-    },
   ],
 }

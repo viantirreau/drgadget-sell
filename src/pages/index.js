@@ -14,35 +14,6 @@ const StoreIndex = ({location}) => {
           title
         }
       }
-      allMoltinProduct {
-        edges {
-          node {
-            id
-            name
-            description
-            mainImageHref
-            meta {
-              display_price {
-                with_tax {
-                  amount
-                  currency
-                  formatted
-                }
-              }
-            }
-            mainImage {
-              childImageSharp {
-                sizes(maxWidth: 600) {
-                  ...GatsbyImageSharpSizes
-                }
-                fluid {
-                  ...GatsbyImageSharpFluid_tracedSVG
-                }
-              }
-            }
-          }
-        }
-      }
       allSlugsCsv {
         edges {
           node {

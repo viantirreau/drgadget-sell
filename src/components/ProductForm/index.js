@@ -1,27 +1,130 @@
 /* eslint-disable camelcase */
 /*eslint max-len: ["error", { "code": 110 }]*/
 import React from 'react'
-import {Form, Divider, Button, Transition} from 'semantic-ui-react'
+import {
+  Form,
+  Divider,
+  Button,
+  Transition,
+  Grid,
+  Message,
+  Header,
+} from 'semantic-ui-react'
 import formStyles from './form.module.css'
+import formatCurrency from '../../utils/formatCurrency'
 
 class ProductForm extends React.Component {
   constructor(props) {
     super(props)
     this.defects = props.defects
+    this.defectsDescriptions = props.defectsDescriptions
     this.storageCapacities = props.storageCapacities
     this.versions = props.versions
+    this.failures = {}
+    this.failureReasons = {}
+    this.formErrors = []
   }
   // Set initial state here
-  state = {}
+  state = {
+    failuresArray: [],
+    failureReasonsArray: [],
+    error: false,
+    triedToSubmit: false,
+    showPrice: false,
+  }
 
-  handleChange = (e, {value}) => this.setState({value})
-  handleStorage = (e, {storage}) => this.setState({storage})
-  handleFailures = (e, {failure}) => this.setState({failure})
+  handleChange = (e, {name, value}) => this.setState({[name]: value})
+
+  /*
+   Form state-preserving method, i.e. when a button causes the parent component to
+   hide and unmount after the field using this handler as callback was filled, the answers are preserved 
+   if the parent is mounted and gets visible again.
+  */
+  handleFailureChange = (e, {name, checked}) => {
+    this.failures[name] = checked
+    let failuresArray = Object.keys(this.failures).filter(
+      key => this.failures[key] === true,
+    )
+    /* It's mandatory to call setState somehow in every state change. Class attributes (object properties)
+       do not trigger re-rendering, so the component won't be updated in the DOM.
+    */
+    this.setState({failuresArray})
+  }
+  // Form state-preserving method
+  handleFailureReasonsChange = (e, {name, checked}) => {
+    this.failureReasons[name] = checked
+    let failureReasonsArray = Object.keys(this.failureReasons).filter(
+      key => this.failureReasons[key] === true,
+    )
+    this.setState({failureReasonsArray})
+  }
+  // Form state-preserving method
+  handleTechServiceDiagnosis = (e, {value}) =>
+    this.setState({techServiceDiagnosis: value})
+
+  handleSubmit = e => {
+    let hasError =
+      this.state.storage == undefined ||
+      this.state.hasFailure == undefined ||
+      (this.state.hasFailure && this.state.failuresArray.length === 0) ||
+      (this.state.hasFailure && this.state.failureReasonsArray.length === 0) ||
+      this.state.techService == undefined ||
+      (this.state.techService &&
+        this.state.techServiceDiagnosis == undefined) ||
+      (this.state.techService && this.state.techServiceDiagnosis === '')
+
+    this.setState({
+      error: hasError,
+      triedToSubmit: true,
+      showPrice: false,
+    })
+    this.formErrors = []
+    if (this.state.storage == undefined) {
+      this.formErrors.push('Selecciona el almacenamiento de tu celular')
+    }
+    if (this.state.hasFailure == undefined) {
+      this.formErrors.push('Selecciona si tu equipo presenta fallas')
+    }
+    if (this.state.hasFailure && this.state.failuresArray.length === 0) {
+      this.formErrors.push('Elige al menos una falla de la lista')
+    }
+    if (this.state.hasFailure && this.state.failureReasonsArray.length === 0) {
+      this.formErrors.push('Elige al menos una causa para las fallas')
+    }
+    if (this.state.techService == undefined) {
+      this.formErrors.push(
+        'Selecciona si has llevado tu equipo al servicio técnico',
+      )
+    }
+    if (this.state.techService) {
+      if (
+        this.state.techServiceDiagnosis == undefined ||
+        this.state.techServiceDiagnosis === ''
+      ) {
+        this.formErrors.push('Incluye el diagnóstico del servicio técnico')
+      }
+    }
+    if (!hasError) {
+      let model = Object.values(this.versions).filter(
+        edge => edge.node.storage == this.state.storage,
+      )[0].node
+      let price = model.max
+      console.log(price)
+      this.state.failuresArray.forEach(discount => {
+        price -= this.defects[discount]
+        console.log(
+          `Discounting ${discount} from price. Current value: ${price}`,
+        )
+      })
+      price = Math.max(model.min, price)
+      console.log(price)
+      this.setState({showPrice: true, price})
+    }
+  }
 
   render() {
-    const {value, storage, failure} = this.state
-    console.log(this.state)
-
+    const {storage, hasfailure, showPrice} = this.state
+    console.log('showPrice', this.state.showPrice === true)
     return (
       <Form size="big">
         <Form.Field>
@@ -30,10 +133,11 @@ class ProductForm extends React.Component {
             <Button
               inverted
               color="green"
-              storage={option}
-              onClick={this.handleStorage}
+              name="storage"
+              onClick={this.handleChange}
               active={storage === option}
               key={option}
+              value={option}
               size="big"
               className={formStyles.button}
             >
@@ -46,9 +150,10 @@ class ProductForm extends React.Component {
           <Button
             inverted
             color="green"
-            failure="false"
-            onClick={this.handleFailures}
-            active={failure === 'false'}
+            name="hasFailure"
+            value={false}
+            onClick={this.handleChange}
+            active={this.state.hasFailure === false}
             className={formStyles.button}
             key="perfect"
           >
@@ -57,9 +162,10 @@ class ProductForm extends React.Component {
           <Button
             inverted
             color="green"
-            failure="true"
-            onClick={this.handleFailures}
-            active={failure === 'true'}
+            value={true}
+            name="hasFailure"
+            onClick={this.handleChange}
+            active={this.state.hasFailure === true}
             className={formStyles.button}
             key="fails"
           >
@@ -69,39 +175,145 @@ class ProductForm extends React.Component {
         <Transition
           animation="fade up"
           duration="300"
-          visible={failure === 'true'}
+          visible={this.state.hasFailure === true}
+          unmountOnHide
         >
-          <Form.Field>
-            <label>Selecciona las fallas de tu equipo</label>
-            {/* screen,battery,charger,home,backcam,frontcam,earspeaker,loudspeaker,glass,chassis */}
-            <Form.Checkbox label="No funciona el táctil" name="screen" />
-            <Form.Checkbox label="Batería en mal estado" name="battery" />
-            <Form.Checkbox label="No carga el teléfono" name="charger" />
-            <Form.Checkbox label="Falla el botón de inicio" name="home" />
-            <Form.Checkbox
-              label="Cámara trasera en mal estado"
-              name="backcam"
-            />
-            <Form.Checkbox
-              label="Cámara frontal en mal estado"
-              name="frontcam"
-            />
-            <Form.Checkbox
-              label="Falla el auricular (se escuchan mal las llamadas)"
-              name="earspeaker"
-            />
-            <Form.Checkbox label="Parlante defectuoso" name="loudspeaker" />
-            <Form.Checkbox label="Pantalla trizada" name="glass" />
-            <Form.Checkbox
-              label="Está abollado o roto en la parte trasera"
-              name="chassis"
-            />
-          </Form.Field>
+          <Form.Group grouped>
+            <Form.Field>
+              <label>Selecciona las fallas de tu equipo</label>
+              {/* screen,battery,charger,home,backcam,frontcam,earspeaker,loudspeaker,glass,chassis */}
+              {Object.entries(this.defectsDescriptions).map(
+                ([defect, description]) => {
+                  return (
+                    <Form.Checkbox
+                      label={description}
+                      name={defect}
+                      onChange={this.handleFailureChange}
+                      key={defect}
+                      /* This preserves the form state when hasFailure is toggled
+                         and the Transition is hidden and then unmounted. When it is
+                         active again, the answers will remain the same as before.
+                      */
+                      checked={defect in this.failures}
+                    />
+                  )
+                },
+              )}
+            </Form.Field>
+            <Form.Field>
+              <label>
+                Selecciona los posibles factores que causaron
+                {this.state.failuresArray.length > 1
+                  ? ' las fallas'
+                  : ' la falla'}
+              </label>
+              <Form.Checkbox
+                label="Se cayó al agua"
+                name="water"
+                onChange={this.handleFailureReasonsChange}
+                checked={'water' in this.failureReasons}
+                key="water"
+              />
+              <Form.Checkbox
+                label="Se golpeó contra el suelo"
+                name="crash"
+                onChange={this.handleFailureReasonsChange}
+                checked={'crash' in this.failureReasons}
+                key="crash"
+              />
+              <Form.Checkbox
+                label="Mucho tiempo de uso"
+                name="usage"
+                onChange={this.handleFailureReasonsChange}
+                checked={'usage' in this.failureReasons}
+                key="usage"
+              />
+              <Form.Checkbox
+                label="Le pasó de la nada (en un momento estaba bien y luego comenzó a fallar)"
+                name="sudden"
+                onChange={this.handleFailureReasonsChange}
+                checked={'sudden' in this.failureReasons}
+                key="sudden"
+              />
+            </Form.Field>
+          </Form.Group>
         </Transition>
 
-        <Form.TextArea label="About" placeholder="Tell us more about you..." />
-        <Form.Checkbox label="I agree to the Terms and Conditions" />
-        <Form.Button>Calcular precio</Form.Button>
+        <Form.Field>
+          <label>¿Has llevado el teléfono al servicio técnico?</label>
+          <Button
+            inverted
+            color="green"
+            name="techService"
+            value={false}
+            onClick={this.handleChange}
+            active={this.state.techService === false}
+            className={formStyles.button}
+            key="perfect"
+            size="big"
+          >
+            No
+          </Button>
+          <Button
+            inverted
+            color="green"
+            name="techService"
+            value={true}
+            onClick={this.handleChange}
+            active={this.state.techService === true}
+            className={formStyles.button}
+            key="fails"
+            size="big"
+          >
+            Sí
+          </Button>
+        </Form.Field>
+        <Transition
+          animation="fade up"
+          duration="300"
+          visible={this.state.techService === true}
+          unmountOnHide
+        >
+          <Form.TextArea
+            label="¿Cuál fue el diagnóstico del celular?"
+            placeholder="Diagnóstico del servicio técnico"
+            onChange={this.handleTechServiceDiagnosis}
+            value={this.state.techServiceDiagnosis}
+          ></Form.TextArea>
+        </Transition>
+        <Transition
+          animation="fade up"
+          duration="300"
+          visible={
+            this.state.error === true && this.state.triedToSubmit === true
+          }
+          unmountOnHide
+        >
+          <Message
+            error
+            header="Debes completar todos los campos"
+            list={this.formErrors}
+          ></Message>
+        </Transition>
+        <Grid>
+          <Grid.Column textAlign="center">
+            <Divider></Divider>
+            <Form.Button size="big" onClick={this.handleSubmit}>
+              Calcular precio
+            </Form.Button>
+            <Transition
+              visible={this.state.showPrice === true}
+              unmountOnHide
+              animation="fade down"
+              duration="800"
+            >
+              <div>
+                <Header>Precio de retoma</Header>
+                <span>{formatCurrency(this.state.price)}</span>
+              </div>
+            </Transition>
+          </Grid.Column>
+        </Grid>
       </Form>
     )
   }

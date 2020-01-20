@@ -13,7 +13,18 @@ import ProductAttributes from '../components/ProductAttributes'
 */
 
 const ProductPageTemplate = props => {
-  const defects = props.data.defectsCsv
+  const defectsRaw = props.data.defectsCsv
+  const defects = Object.keys(defectsRaw)
+    .filter(key => defectsRaw[key] > 0)
+    .reduce((obj, key) => {
+      obj[key] = defectsRaw[key]
+      return obj
+    }, {})
+  const defectsDescriptions = props.data.allDefectDescriptionsCsv.edges
+    .filter(edge => edge.node.defect in defects)
+    .reduce((obj, edge) => {
+      return {...obj, [edge.node.defect]: edge.node.description}
+    }, {})
   const versions = props.data.allPricesCsv.edges
   const storageCapacities = versions.map(edge => edge.node.storage)
   const maxPrice = Math.max(...versions.map(edge => edge.node.max))
@@ -26,6 +37,7 @@ const ProductPageTemplate = props => {
   }
   const productAttributes = {
     defects,
+    defectsDescriptions,
     versions,
     storageCapacities,
   }
@@ -49,6 +61,14 @@ export const pageQuery = graphql`
           fingerprint
           max
           min
+        }
+      }
+    }
+    allDefectDescriptionsCsv {
+      edges {
+        node {
+          defect
+          description
         }
       }
     }

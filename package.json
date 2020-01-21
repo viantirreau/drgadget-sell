@@ -1,10 +1,10 @@
 {
-  "name": "gatsby-starter-ecommerce",
-  "description": "Gatsby starter ecommerce",
-  "version": "2.0.0",
-  "author": "Parminder Sanghera",
+  "name": "drgadget-sell",
+  "description": "A smartphone trading site made using Gatsby, inspired from https://parmsang.github.io/gatsby-starter-ecommerce/ by Parminder Sanghera",
+  "version": "1.0.0",
+  "author": "Víctor Tirreau",
   "bugs": {
-    "url": "https://github.com/parmsang/gatsby-starter-ecommerce"
+    "url": "https://github.com/viantirreau/drgadget-sell"
   },
   "dependencies": {
     "@mdx-js/mdx": "^1.5.3",

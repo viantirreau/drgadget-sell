@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react'
 import {graphql} from 'gatsby'
 import ProductSummary from '../components/ProductSummary'
@@ -61,6 +60,7 @@ export const pageQuery = graphql`
           fingerprint
           max
           min
+          market
         }
       }
     }
@@ -92,7 +92,7 @@ export const pageQuery = graphql`
           publicURL
           childImageSharp {
             fluid {
-              ...GatsbyImageSharpFluid
+              ...GatsbyImageSharpFluid_withWebp_tracedSVG
             }
           }
         }

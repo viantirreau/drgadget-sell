@@ -28,7 +28,7 @@ const StoreIndex = ({location}) => {
             relativeDirectory
             childImageSharp {
               fluid {
-                ...GatsbyImageSharpFluid
+                ...GatsbyImageSharpFluid_withWebp_tracedSVG
               }
             }
           }
@@ -84,11 +84,10 @@ const StoreIndex = ({location}) => {
     <Layout location={location}>
       <SEO title={siteTitle} />
       <Header
-        as="h3"
-        icon
+        as="h1"
         textAlign="center"
         style={{
-          marginBottom: '2em',
+          marginBottom: '1em',
         }}
       >
         <Header.Content
@@ -96,7 +95,9 @@ const StoreIndex = ({location}) => {
             width: '60%',
             margin: '0 auto',
           }}
-        ></Header.Content>
+        >
+          Productos populares
+        </Header.Content>
       </Header>
       <ProductList products={products} />
     </Layout>

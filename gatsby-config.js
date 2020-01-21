@@ -62,13 +62,13 @@ module.exports = {
       options: {
         name: 'Gatsby Shop App',
         short_name: 'Shop App',
-        start_url: '/gatsby-starter-ecommerce/',
+        start_url: '/',
         background_color: '#ffffff',
         theme_color: '#ffffff',
         display: 'minimal-ui',
         icons: [
           {
-            src: `/favicons/android-chrome-512x512.png`,
+            src: `/favicons/drgadget/android-chrome-512x512.png`,
             sizes: `512x512`,
             type: `image/png`,
           },

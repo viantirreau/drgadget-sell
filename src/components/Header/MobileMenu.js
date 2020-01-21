@@ -8,9 +8,11 @@ import {
   Segment,
   Divider,
   Button,
+  Header,
 } from 'semantic-ui-react'
 import styled from 'styled-components'
 import Logo from './Logo'
+import {graphql, useStaticQuery} from 'gatsby'
 
 const StyledLink = styled(Link)`
   font-weight: bold;
@@ -69,6 +71,13 @@ const StyledDivider = styled(Divider)`
 const MobileMenu = ({location: {pathname}}) => {
   const [activeItem, setActiveItem] = useState(pathname)
   const [open, setOpen] = useState(false)
+  const data = useStaticQuery(graphql`
+    query MobileCategoryQuery {
+      allSlugsCsv {
+        categories: distinct(field: category)
+      }
+    }
+  `)
 
   useEffect(() => {
     setActiveItem(pathname)
@@ -90,16 +99,11 @@ const MobileMenu = ({location: {pathname}}) => {
           <Logo />
         </Menu.Item>
         <Menu.Menu position="right">
-          <Menu.Item
-            as={Link}
-            to="/cart/"
-            active={activeItem === withPrefix('/cart/')}
-          ></Menu.Item>
           <Menu.Item position="right">
             <BurgerButton
               basic
               onClick={handleClick}
-              aria-label="Open Navigation Menu"
+              aria-label="Abrir menú de navegación"
               autoFocus
             >
               <Icon fitted name="bars" />
@@ -107,10 +111,14 @@ const MobileMenu = ({location: {pathname}}) => {
           </Menu.Item>
         </Menu.Menu>
         <Portal closeOnEscape onClose={handleClose} open={open}>
-          <StyledSegment className role="dialog" aria-label="Navigation Menu">
+          <StyledSegment
+            className
+            role="dialog"
+            aria-label="Menú de navegación"
+          >
             <StyledContainer>
               <CloseButton
-                aria-label="Close Navigation"
+                aria-label="Cerrar"
                 basic
                 circular
                 onClick={handleClose}
@@ -119,18 +127,40 @@ const MobileMenu = ({location: {pathname}}) => {
                 X
               </CloseButton>
               <StyledLink to="/" onClick={handleClose}>
-                Home
+                Inicio
               </StyledLink>
               <StyledDivider />
-              <StyledLink to="/register/" onClick={handleClose} key={1}>
-                Sign Up
-              </StyledLink>
-              ,
-              <StyledDivider key={2} />,
-              <StyledLink to="/login/" onClick={handleClose} key={3}>
-                Sign In
-              </StyledLink>
-              ,
+              <Header
+                as="h1"
+                textAlign="center"
+                style={{
+                  marginBottom: '1em',
+                }}
+              >
+                <Header.Content
+                  style={{
+                    width: '60%',
+                    margin: '0 auto',
+                  }}
+                >
+                  Categorías
+                </Header.Content>
+              </Header>
+              {data.allSlugsCsv.categories.map((category, index) => {
+                let sep = index > 0 ? <StyledDivider key={index} /> : ''
+                return (
+                  <div key={index}>
+                    {sep}
+                    <StyledLink
+                      to={`/category/${category.toLowerCase()}`}
+                      onClick={handleClose}
+                      key={index}
+                    >
+                      {category}
+                    </StyledLink>
+                  </div>
+                )
+              })}
             </StyledContainer>
           </StyledSegment>
         </Portal>

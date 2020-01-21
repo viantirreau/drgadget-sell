@@ -1,12 +1,12 @@
-model,slug
-iPhone SE,iphone-se
-iPhone 6,iphone-6
-iPhone 6 PLUS,iphone-6plus
-iPhone 6S,iphone-6s
-iPhone 6S PLUS,iphone-6splus
-iPhone 7,iphone-7
-iPhone 7 PLUS,iphone-7plus
-iPhone 8,iphone-8
-iPhone 8 PLUS,iphone-8plus
-iPhone X,iphone-x
-iPhone XR,iphone-xr
+model,slug,category
+iPhone SE,iphone-se,iPhone
+iPhone 6,iphone-6,iPhone
+iPhone 6 PLUS,iphone-6plus,iPhone
+iPhone 6S,iphone-6s,iPhone
+iPhone 6S PLUS,iphone-6splus,iPhone
+iPhone 7,iphone-7,iPhone
+iPhone 7 PLUS,iphone-7plus,iPhone
+iPhone 8,iphone-8,iPhone
+iPhone 8 PLUS,iphone-8plus,iPhone
+iPhone X,iphone-x,iPhone
+iPhone XR,iphone-xr,iPhone

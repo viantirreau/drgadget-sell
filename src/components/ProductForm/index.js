@@ -5,10 +5,13 @@ import {
   Form,
   Divider,
   Button,
+  Icon,
+  Label,
   Transition,
   Grid,
   Message,
   Header,
+  Popup,
 } from 'semantic-ui-react'
 import formStyles from './form.module.css'
 import formatCurrency from '../../utils/formatCurrency'
@@ -108,23 +111,22 @@ class ProductForm extends React.Component {
       let model = Object.values(this.versions).filter(
         edge => edge.node.storage == this.state.storage,
       )[0].node
-      let price = model.max
-      console.log(price)
+      let basePrice = model.max
+      let discounts = 0
       this.state.failuresArray.forEach(discount => {
-        price -= this.defects[discount]
-        console.log(
-          `Discounting ${discount} from price. Current value: ${price}`,
-        )
+        discounts += this.defects[discount]
       })
-      price = Math.max(model.min, price)
-      console.log(price)
-      this.setState({showPrice: true, price})
+      let buyPrice = Math.max(model.min, basePrice - discounts)
+      this.setState({
+        showPrice: true,
+        price: buyPrice,
+        marketPrice: model.market,
+      })
     }
   }
 
   render() {
-    const {storage, hasfailure, showPrice} = this.state
-    console.log('showPrice', this.state.showPrice === true)
+    const {storage, hasFailure, showPrice} = this.state
     return (
       <Form size="big">
         <Form.Field>
@@ -153,7 +155,7 @@ class ProductForm extends React.Component {
             name="hasFailure"
             value={false}
             onClick={this.handleChange}
-            active={this.state.hasFailure === false}
+            active={hasFailure === false}
             className={formStyles.button}
             key="perfect"
           >
@@ -165,7 +167,7 @@ class ProductForm extends React.Component {
             value={true}
             name="hasFailure"
             onClick={this.handleChange}
-            active={this.state.hasFailure === true}
+            active={hasFailure === true}
             className={formStyles.button}
             key="fails"
           >
@@ -309,7 +311,43 @@ class ProductForm extends React.Component {
             >
               <div>
                 <Header>Precio de retoma</Header>
-                <span>{formatCurrency(this.state.price)}</span>
+                <Header
+                  as="h2"
+                  style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
+                >
+                  {formatCurrency(this.state.price)}
+                </Header>
+                <Header style={{marginBottom: '0', paddingBottom: '0'}}>
+                  Precio de mercado
+                </Header>
+                <Header
+                  as="h4"
+                  style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
+                >
+                  En buen estado
+                </Header>
+                <Header
+                  as="h2"
+                  style={{margin: '0', padding: '0', fontWeight: '400'}}
+                >
+                  {formatCurrency(this.state.marketPrice)}
+                  <Popup
+                    trigger={
+                      <Label as="a" circular>
+                        <Icon
+                          name="info circle"
+                          size="large"
+                          style={{margin: 0, padding: 0}}
+                        ></Icon>
+                      </Label>
+                    }
+                    content={
+                      <Button color="green" content="Confirm the launch" />
+                    }
+                    on="click"
+                    position="bottom right"
+                  />
+                </Header>
               </div>
             </Transition>
           </Grid.Column>

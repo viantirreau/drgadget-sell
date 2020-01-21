@@ -2,9 +2,17 @@ import React, {useState, useEffect} from 'react'
 import {Link, withPrefix} from 'gatsby'
 import {Menu, Container} from 'semantic-ui-react'
 import Logo from './Logo'
+import {graphql, useStaticQuery} from 'gatsby'
 
 const DesktopMenu = ({location: {pathname}}) => {
   const [activeItem, setActiveItem] = useState(pathname)
+  const data = useStaticQuery(graphql`
+    query CategoryQuery {
+      allSlugsCsv {
+        categories: distinct(field: category)
+      }
+    }
+  `)
 
   useEffect(() => {
     setActiveItem(pathname)
@@ -22,20 +30,20 @@ const DesktopMenu = ({location: {pathname}}) => {
           <Logo />
         </Menu.Item>
         <Menu.Menu position="right">
-          <Menu.Item
-            as={Link}
-            to="/register/"
-            active={activeItem === withPrefix('/register/')}
-          >
-            Sign up
-          </Menu.Item>
-          <Menu.Item
-            as={Link}
-            to="/login/"
-            active={activeItem === withPrefix('/login/')}
-          >
-            Sign in
-          </Menu.Item>
+          {data.allSlugsCsv.categories.map(category => {
+            return (
+              <Menu.Item
+                as={Link}
+                to={`/category/${category.toLowerCase()}`}
+                active={
+                  activeItem ===
+                  withPrefix(`/category/${category.toLowerCase()}`)
+                }
+              >
+                {category}
+              </Menu.Item>
+            )
+          })}
         </Menu.Menu>
       </Container>
     </Menu>

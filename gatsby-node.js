@@ -53,15 +53,15 @@ module.exports.createPages = ({graphql, actions}) => {
 exports.onCreateWebpackConfig = ({actions}) => {
   actions.setWebpackConfig({
     node: {fs: 'empty'},
-    // output: {
-    //   // e.g. app-2e49587d85e03a033f58.js
-    //   filename: `[name]-[contenthash].js`,
-    //   // e.g. component---src-blog-2-js-cebc3ae7596cbb5b0951.js
-    //   chunkFilename: `[name]-[contenthash].js`,
-    //   path: `/public`,
-    //   publicPath: `/`,
-    // },
-    // target: `web`,
-    // mode: `production`,
+    output: {
+      // e.g. app-2e49587d85e03a033f58.js
+      filename: `[name]-[contenthash].js`,
+      // e.g. component---src-blog-2-js-cebc3ae7596cbb5b0951.js
+      chunkFilename: `[name]-[contenthash].js`,
+      path: `/public`,
+      publicPath: `/`,
+    },
+    target: `web`,
+    mode: `production`,
   })
 }

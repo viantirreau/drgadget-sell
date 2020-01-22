@@ -1,26 +1,21 @@
 /* eslint-disable camelcase */
 /*eslint max-len: ["error", { "code": 110 }]*/
-import React from 'react'
-import {
-  Form,
-  Divider,
-  Button,
-  Icon,
-  Label,
-  Transition,
-  Grid,
-  Message,
-  Header,
-  Popup,
-} from 'semantic-ui-react'
-import formStyles from './form.module.css'
-import formatCurrency from '../../utils/formatCurrency'
+import React, {cloneElement} from 'react'
+import {Form, Grid, Divider} from 'semantic-ui-react'
+import StorageSelect from './StorageSelect'
+import FailureSelect from './FailureSelect'
+import TechServiceSelect from './TechServiceSelect'
+import ErrorMessage from './ErrorMessage'
+import PriceReport from './PriceReport'
 
 class ProductForm extends React.Component {
   constructor(props) {
     super(props)
     this.defects = props.defects
+    // https://stackoverflow.com/a/39333479
     this.defectsDescriptions = props.defectsDescriptions
+    this.defectsTranslations = props.defectsTranslations
+    this.repairs = props.repairs
     this.storageCapacities = props.storageCapacities
     this.versions = props.versions
     this.failures = {}
@@ -34,14 +29,15 @@ class ProductForm extends React.Component {
     error: false,
     triedToSubmit: false,
     showPrice: false,
+    repairPriceDetails: {},
   }
 
   handleChange = (e, {name, value}) => this.setState({[name]: value})
 
   /*
    Form state-preserving method, i.e. when a button causes the parent component to
-   hide and unmount after the field using this handler as callback was filled, the answers are preserved 
-   if the parent is mounted and gets visible again.
+   hide and unmount after the field using this handler as callback was filled, the answers
+   are preserved if the parent is mounted and gets visible again.
   */
   handleFailureChange = (e, {name, checked}) => {
     this.failures[name] = checked
@@ -113,243 +109,84 @@ class ProductForm extends React.Component {
       )[0].node
       let basePrice = model.max
       let discounts = 0
+      let repairPriceDetails = {}
+      let totalRepairPrice = 0
       this.state.failuresArray.forEach(discount => {
         discounts += this.defects[discount]
+        let translation = this.defectsTranslations[discount]
+        repairPriceDetails[translation] = this.repairs[discount]
+        totalRepairPrice += this.repairs[discount]
       })
+      console.log(repairPriceDetails)
       let buyPrice = Math.max(model.min, basePrice - discounts)
       this.setState({
         showPrice: true,
         price: buyPrice,
         marketPrice: model.market,
+        totalRepairPrice,
+        repairPriceDetails,
       })
     }
   }
 
   render() {
-    const {storage, hasFailure, showPrice} = this.state
+    const {
+      storage,
+      hasFailure,
+      failuresArray,
+      failureReasonsArray,
+      techService,
+      techServiceDiagnosis,
+      error,
+      triedToSubmit,
+      showPrice,
+      price,
+      marketPrice,
+      totalRepairPrice,
+      repairPriceDetails,
+    } = this.state
     return (
       <Form size="big">
-        <Form.Field>
-          <label>Almacenamiento</label>
-          {this.storageCapacities.map(option => (
-            <Button
-              inverted
-              color="green"
-              name="storage"
-              onClick={this.handleChange}
-              active={storage === option}
-              key={option}
-              value={option}
-              size="big"
-              className={formStyles.button}
-            >
-              {`${option} GB`}
-            </Button>
-          ))}
-        </Form.Field>
-        <Form.Field>
-          <label>¿Tu teléfono tiene alguna falla?</label>
-          <Button
-            inverted
-            color="green"
-            name="hasFailure"
-            value={false}
-            onClick={this.handleChange}
-            active={hasFailure === false}
-            className={formStyles.button}
-            key="perfect"
-          >
-            No, está en perfecto estado
-          </Button>
-          <Button
-            inverted
-            color="green"
-            value={true}
-            name="hasFailure"
-            onClick={this.handleChange}
-            active={hasFailure === true}
-            className={formStyles.button}
-            key="fails"
-          >
-            Sí, tiene algunos detalles
-          </Button>
-        </Form.Field>
-        <Transition
-          animation="fade up"
-          duration="300"
-          visible={this.state.hasFailure === true}
-          unmountOnHide
-        >
-          <Form.Group grouped>
-            <Form.Field>
-              <label>Selecciona las fallas de tu equipo</label>
-              {/* screen,battery,charger,home,backcam,frontcam,earspeaker,loudspeaker,glass,chassis */}
-              {Object.entries(this.defectsDescriptions).map(
-                ([defect, description]) => {
-                  return (
-                    <Form.Checkbox
-                      label={description}
-                      name={defect}
-                      onChange={this.handleFailureChange}
-                      key={defect}
-                      /* This preserves the form state when hasFailure is toggled
-                         and the Transition is hidden and then unmounted. When it is
-                         active again, the answers will remain the same as before.
-                      */
-                      checked={this.state.failuresArray.includes(defect)}
-                    />
-                  )
-                },
-              )}
-            </Form.Field>
-            <Form.Field>
-              <label>
-                Selecciona los posibles factores que causaron
-                {this.state.failuresArray.length > 1
-                  ? ' las fallas'
-                  : ' la falla'}
-              </label>
-              <Form.Checkbox
-                label="Se cayó al agua"
-                name="water"
-                onChange={this.handleFailureReasonsChange}
-                checked={this.state.failureReasonsArray.includes('water')}
-                key="water"
-              />
-              <Form.Checkbox
-                label="Se golpeó contra el suelo"
-                name="crash"
-                onChange={this.handleFailureReasonsChange}
-                checked={this.state.failureReasonsArray.includes('crash')}
-                key="crash"
-              />
-              <Form.Checkbox
-                label="Mucho tiempo de uso"
-                name="usage"
-                onChange={this.handleFailureReasonsChange}
-                checked={this.state.failureReasonsArray.includes('usage')}
-                key="usage"
-              />
-              <Form.Checkbox
-                label="Le pasó de la nada (en un momento estaba bien y luego comenzó a fallar)"
-                name="sudden"
-                onChange={this.handleFailureReasonsChange}
-                checked={this.state.failureReasonsArray.includes('sudden')}
-                key="sudden"
-              />
-            </Form.Field>
-          </Form.Group>
-        </Transition>
+        <StorageSelect
+          selectedStorage={storage}
+          storageCapacities={this.storageCapacities}
+          cbChange={this.handleChange}
+        />
+        <FailureSelect
+          hasFailure={hasFailure}
+          defectsDescriptions={this.defectsDescriptions}
+          failuresArray={failuresArray}
+          failureReasonsArray={failureReasonsArray}
+          cbChange={this.handleChange}
+          cbFailures={this.handleFailureChange}
+          cbReasons={this.handleFailureReasonsChange}
+        />
 
-        <Form.Field>
-          <label>¿Has llevado el teléfono al servicio técnico?</label>
-          <Button
-            inverted
-            color="green"
-            name="techService"
-            value={false}
-            onClick={this.handleChange}
-            active={this.state.techService === false}
-            className={formStyles.button}
-            key="perfect"
-            size="big"
-          >
-            No
-          </Button>
-          <Button
-            inverted
-            color="green"
-            name="techService"
-            value={true}
-            onClick={this.handleChange}
-            active={this.state.techService === true}
-            className={formStyles.button}
-            key="fails"
-            size="big"
-          >
-            Sí
-          </Button>
-        </Form.Field>
-        <Transition
-          animation="fade up"
-          duration="300"
-          visible={this.state.techService === true}
-          unmountOnHide
-        >
-          <Form.TextArea
-            label="¿Cuál fue el diagnóstico del celular?"
-            placeholder="Diagnóstico del servicio técnico"
-            onChange={this.handleTechServiceDiagnosis}
-            value={this.state.techServiceDiagnosis}
-          ></Form.TextArea>
-        </Transition>
-        <Transition
-          animation="fade up"
-          duration="300"
-          visible={
-            this.state.error === true && this.state.triedToSubmit === true
-          }
-          unmountOnHide
-        >
-          <Message
-            error
-            header="Debes completar todos los campos"
-            list={this.formErrors}
-          ></Message>
-        </Transition>
+        <TechServiceSelect
+          techService={techService}
+          diagnosis={techServiceDiagnosis}
+          cbChange={this.handleChange}
+          cbDiagnosis={this.handleTechServiceDiagnosis}
+        />
+
+        <ErrorMessage
+          errorState={error}
+          triedToSubmit={triedToSubmit}
+          formErrors={this.formErrors}
+        />
         <Grid>
           <Grid.Column textAlign="center">
             <Divider></Divider>
             <Form.Button size="big" onClick={this.handleSubmit}>
               Calcular precio
             </Form.Button>
-            <Transition
-              visible={this.state.showPrice === true}
-              unmountOnHide
-              animation="fade down"
-              duration="800"
-            >
-              <div>
-                <Header>Precio de retoma</Header>
-                <Header
-                  as="h2"
-                  style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
-                >
-                  {formatCurrency(this.state.price)}
-                </Header>
-                <Header style={{marginBottom: '0', paddingBottom: '0'}}>
-                  Precio de mercado
-                </Header>
-                <Header
-                  as="h4"
-                  style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
-                >
-                  En buen estado
-                </Header>
-                <Header
-                  as="h2"
-                  style={{margin: '0', padding: '0', fontWeight: '400'}}
-                >
-                  {formatCurrency(this.state.marketPrice)}
-                  <Popup
-                    trigger={
-                      <Label as="a" circular>
-                        <Icon
-                          name="info circle"
-                          size="large"
-                          style={{margin: 0, padding: 0}}
-                        ></Icon>
-                      </Label>
-                    }
-                    content={
-                      <Button color="green" content="Confirm the launch" />
-                    }
-                    on="click"
-                    position="bottom right"
-                  />
-                </Header>
-              </div>
-            </Transition>
+            <PriceReport
+              showPrice={showPrice}
+              price={price}
+              marketPrice={marketPrice}
+              repairs={repairPriceDetails}
+              repairPrice={totalRepairPrice}
+            />
           </Grid.Column>
         </Grid>
       </Form>

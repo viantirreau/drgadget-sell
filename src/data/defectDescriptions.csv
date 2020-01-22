@@ -1,11 +1,12 @@
-defect,description
-screen,No funciona el táctil
-battery,Batería en mal estado
-charger,No carga el teléfono
-home,Falla el botón de inicio
-backcam,Cámara trasera en mal estado
-frontcam,Cámara frontal en mal estado
-earspeaker,Falla el auricular (se escuchan mal las llamadas)
-loudspeaker,Parlante defectuoso
-glass,Pantalla trizada
-chassis,Está abollado o roto en la parte trasera
+defect,description,translation
+screen,No funciona el táctil,Pantalla
+battery,Batería en mal estado,Batería
+charger,No carga el teléfono,Puerto de carga
+home,Falla el botón de inicio,Botón Home
+backcam,Cámara trasera en mal estado,Cámara trasera
+frontcam,Cámara frontal en mal estado,Cámara frontal
+earspeaker,Falla el auricular (se escuchan mal las llamadas),Auricular
+loudspeaker,Parlante defectuoso,Parlante
+glass,Pantalla trizada,Vidrio
+chassis,Está abollado o roto en la parte trasera,Chasis
+motherboard,La placa madre está mala,Placa madre

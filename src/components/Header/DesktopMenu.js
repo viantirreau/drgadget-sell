@@ -39,6 +39,7 @@ const DesktopMenu = ({location: {pathname}}) => {
                   activeItem ===
                   withPrefix(`/category/${category.toLowerCase()}`)
                 }
+                key={category}
               >
                 {category}
               </Menu.Item>

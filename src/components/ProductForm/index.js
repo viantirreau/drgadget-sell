@@ -117,7 +117,6 @@ class ProductForm extends React.Component {
         repairPriceDetails[translation] = this.repairs[discount]
         totalRepairPrice += this.repairs[discount]
       })
-      console.log(repairPriceDetails)
       let buyPrice = Math.max(model.min, basePrice - discounts)
       this.setState({
         showPrice: true,
@@ -184,6 +183,7 @@ class ProductForm extends React.Component {
               showPrice={showPrice}
               price={price}
               marketPrice={marketPrice}
+              hasFailure={hasFailure}
               repairs={repairPriceDetails}
               repairPrice={totalRepairPrice}
             />

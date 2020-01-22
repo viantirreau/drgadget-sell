@@ -7,10 +7,19 @@ import {
   Icon,
   Button,
   Table,
+  Grid,
 } from 'semantic-ui-react'
 import formatCurrency from '../../utils/formatCurrency'
+import MailModal from './MailModal'
 
-function PriceReport({showPrice, price, marketPrice, repairs, repairPrice}) {
+function PriceReport({
+  showPrice,
+  price,
+  marketPrice,
+  repairs,
+  repairPrice,
+  hasFailure,
+}) {
   const repairDetailTable = Object.entries(repairs).map(([piece, price]) => {
     return (
       <Table.Row>
@@ -20,12 +29,10 @@ function PriceReport({showPrice, price, marketPrice, repairs, repairPrice}) {
     )
   })
   let repairElem = ''
-  if (Object.keys(repairs).length > 0) {
+  if (hasFailure) {
     repairElem = (
-      <div>
-        <Header
-          style={{marginBottom: '0', paddingBottom: '0', paddingTop: '1.5em'}}
-        >
+      <Grid.Column>
+        <Header style={{marginBottom: '0', paddingBottom: '0'}}>
           Precio reparaciones
         </Header>
         <Header
@@ -62,9 +69,20 @@ function PriceReport({showPrice, price, marketPrice, repairs, repairPrice}) {
             position="top center"
           />
         </Header>
-      </div>
+        <MailModal
+          trigger={
+            <Button icon labelPosition="right" style={{marginTop: '1em'}}>
+              Lo quiero reparar
+              <Icon name="right arrow" />
+            </Button>
+          }
+          message="Repara tu celular"
+          actionVerb="reparar tu celular"
+        />
+      </Grid.Column>
     )
   }
+
   return (
     <Transition
       visible={showPrice === true}
@@ -72,28 +90,47 @@ function PriceReport({showPrice, price, marketPrice, repairs, repairPrice}) {
       animation="fade down"
       duration="800"
     >
-      <div>
-        <Header>Precio de retoma</Header>
-        <Header
-          as="h2"
-          style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
-        >
-          {formatCurrency(price)}
-        </Header>
-        <Header style={{marginBottom: '0', paddingBottom: '0'}}>
-          Precio de mercado
-        </Header>
-        <Header
-          as="h4"
-          style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
-        >
-          En buen estado
-        </Header>
-        <Header as="h2" style={{margin: '0', padding: '0', fontWeight: '400'}}>
-          {formatCurrency(marketPrice)}
-        </Header>
-        {repairElem}
-      </div>
+      <Grid
+        stackable
+        divided
+        relaxed
+        columns={hasFailure ? 3 : 2}
+        style={{marginTop: '1em'}}
+      >
+        <Grid.Row>
+          <Grid.Column>
+            <Header>Precio de retoma</Header>
+            <Header
+              as="h2"
+              style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
+            >
+              {formatCurrency(price)}
+            </Header>
+            <Button icon labelPosition="right">
+              Lo quiero vender
+              <Icon name="right arrow" />
+            </Button>
+          </Grid.Column>
+          {repairElem}
+          <Grid.Column>
+            <Header style={{marginBottom: '0', paddingBottom: '0'}}>
+              Precio de mercado
+            </Header>
+            <Header
+              as="h4"
+              style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
+            >
+              En buen estado
+            </Header>
+            <Header
+              as="h2"
+              style={{margin: '0', padding: '0', fontWeight: '400'}}
+            >
+              {formatCurrency(marketPrice)}
+            </Header>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     </Transition>
   )
 }

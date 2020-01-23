@@ -31,9 +31,9 @@ function PriceReport({
   let repairElem = ''
   if (hasFailure) {
     repairElem = (
-      <Grid.Column>
+      <Grid.Column width={6}>
         <Header style={{marginBottom: '0', paddingBottom: '0'}}>
-          Precio reparaciones
+          Precio de reparación
         </Header>
         <Header
           as="h4"
@@ -54,7 +54,7 @@ function PriceReport({
               </Label>
             }
             content={
-              <Table>
+              <Table celled unstackable>
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell>Repuesto</Table.HeaderCell>
@@ -66,7 +66,10 @@ function PriceReport({
               </Table>
             }
             on="click"
-            position="top center"
+            position="top right"
+            size="large"
+            offset="25%p"
+            basic
           />
         </Header>
         <MailModal
@@ -94,12 +97,20 @@ function PriceReport({
         stackable
         divided
         relaxed
-        columns={hasFailure ? 3 : 2}
+        columns="equal"
         style={{marginTop: '1em'}}
       >
         <Grid.Row>
           <Grid.Column>
-            <Header>Precio de retoma</Header>
+            <Header style={{marginBottom: '0', paddingBottom: '0'}}>
+              Precio de retoma
+            </Header>
+            <Header
+              as="h4"
+              style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
+            >
+              En Dr. Gadget
+            </Header>
             <Header
               as="h2"
               style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}

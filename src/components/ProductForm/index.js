@@ -7,6 +7,7 @@ import FailureSelect from './FailureSelect'
 import TechServiceSelect from './TechServiceSelect'
 import ErrorMessage from './ErrorMessage'
 import PriceReport from './PriceReport'
+import axios from 'axios'
 
 class ProductForm extends React.Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class ProductForm extends React.Component {
     this.failures = {}
     this.failureReasons = {}
     this.formErrors = []
+    this.formattedModel = props.formattedModel
   }
   // Set initial state here
   state = {
@@ -127,6 +129,23 @@ class ProductForm extends React.Component {
       })
     }
   }
+  sheetsHook = ({name, email, intent}) => {
+    axios.get(
+      'https://script.google.com/macros/s/AKfycbyAvPkKOaZMWUR1brTvP0uoj6pshztwfWxuS7iceXiLXMkL1xQ/exec',
+      {
+        params: {
+          Nombre: name,
+          Correo: email,
+          Causa: intent,
+          Equipo: this.formattedModel,
+          Almacenamiento: `${this.state.storage} GB`,
+          Fallas: this.state.failuresArray.join(', '),
+          Razones: this.state.failureReasonsArray.join(', '),
+          Diagnóstico: this.state.techServiceDiagnosis || '',
+        },
+      },
+    )
+  }
 
   render() {
     const {
@@ -186,6 +205,7 @@ class ProductForm extends React.Component {
               hasFailure={hasFailure}
               repairs={repairPriceDetails}
               repairPrice={totalRepairPrice}
+              sheetsHook={this.sheetsHook}
             />
           </Grid.Column>
         </Grid>

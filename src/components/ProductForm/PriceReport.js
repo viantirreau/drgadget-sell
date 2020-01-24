@@ -11,6 +11,8 @@ import {
 } from 'semantic-ui-react'
 import formatCurrency from '../../utils/formatCurrency'
 import MailModal from './MailModal'
+import SellSteps from '../Steps/Sell'
+import RepairSteps from '../Steps/Repair'
 
 function PriceReport({
   showPrice,
@@ -19,6 +21,7 @@ function PriceReport({
   repairs,
   repairPrice,
   hasFailure,
+  sheetsHook,
 }) {
   const repairDetailTable = Object.entries(repairs).map(([piece, price]) => {
     return (
@@ -81,6 +84,9 @@ function PriceReport({
           }
           message="Repara tu celular"
           actionVerb="reparar tu celular"
+          sheetsHook={sheetsHook}
+          intent="Reparación"
+          steps={<RepairSteps></RepairSteps>}
         />
       </Grid.Column>
     )
@@ -117,10 +123,19 @@ function PriceReport({
             >
               {formatCurrency(price)}
             </Header>
-            <Button icon labelPosition="right">
-              Lo quiero vender
-              <Icon name="right arrow" />
-            </Button>
+            <MailModal
+              trigger={
+                <Button icon labelPosition="right" style={{marginTop: '1em'}}>
+                  Lo quiero vender
+                  <Icon name="right arrow" />
+                </Button>
+              }
+              message="Vende tu celular"
+              actionVerb="vender tu celular"
+              sheetsHook={sheetsHook}
+              intent="Retoma"
+              steps={<SellSteps></SellSteps>}
+            />
           </Grid.Column>
           {repairElem}
           <Grid.Column>

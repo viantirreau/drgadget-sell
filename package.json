@@ -9,6 +9,7 @@
   "dependencies": {
     "@mdx-js/mdx": "^1.5.3",
     "@mdx-js/react": "^1.5.3",
+    "axios": "^0.19.2",
     "babel-jest": "^24.9.0",
     "babel-plugin-styled-components": "^1.10.0",
     "babel-preset-gatsby": "^0.2.11",

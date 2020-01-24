@@ -59,6 +59,7 @@ const ProductPageTemplate = props => {
     repairs,
     storageCapacities,
     versions,
+    formattedModel: props.pageContext.model,
   }
 
   return (

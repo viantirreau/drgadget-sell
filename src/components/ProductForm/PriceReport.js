@@ -146,7 +146,7 @@ function PriceReport({
               as="h4"
               style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
             >
-              En buen estado
+              En perfecto estado
             </Header>
             <Header
               as="h2"

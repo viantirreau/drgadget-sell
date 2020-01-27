@@ -3,6 +3,7 @@ import {
   Header,
   Modal,
   Form,
+  Input,
   Grid,
   Transition,
   Button,
@@ -22,23 +23,35 @@ class MailModal extends React.Component {
     this.intent = props.intent
     this.steps = props.steps
   }
-  state = {name: '', email: '', error: false, showInstructions: false}
+  state = {
+    name: '',
+    email: '',
+    phone: '',
+    error: false,
+    showInstructions: false,
+  }
   handleChange = (e, {name, value}) => this.setState({[name]: value})
 
+  handlePhone = (e, {name, value}) =>
+    this.setState({
+      [name]: value
+        .replace(/\D/g, '')
+        .substring(0, 8)
+        .replace(/(\d{4})(\d{1,4})/g, '$1 $2'),
+    })
+
   handleSubmit = () => {
-    const {name, email} = this.state
+    const {name, email, phone} = this.state
     if (name === '' || name === undefined || !validateEmail(email)) {
       this.setState({error: true})
     } else {
       this.setState({error: false, showInstructions: true})
-      this.sheetsHook({name, email, intent: this.intent})
+      this.sheetsHook({name, email, phone, intent: this.intent})
     }
-
-    this.setState({submittedName: name, submittedEmail: email})
   }
 
   render() {
-    const {name, email, error, showInstructions} = this.state
+    const {name, email, error, phone, showInstructions} = this.state
     return (
       <Modal dimmer="blurring" trigger={this.trigger} closeIcon>
         <Modal.Header>{this.message}</Modal.Header>
@@ -72,9 +85,22 @@ class MailModal extends React.Component {
                     name="email"
                     onChange={this.handleChange}
                   ></Form.Input>
+                  <Form.Field>
+                    <label>Teléfono</label>
+                    <Input
+                      label="+56 9"
+                      type="tel"
+                      placeholder="4151 9094"
+                      value={phone}
+                      name="phone"
+                      onChange={this.handlePhone}
+                    ></Input>
+                  </Form.Field>
                   <ErrorMessage
                     errorState={error}
-                    formErrors={['Revisa tu nombre e ingresa un correo válido']}
+                    formErrors={[
+                      'Revisa tu nombre, ingresa un correo y un número válido',
+                    ]}
                     triedToSubmit={true}
                   ></ErrorMessage>
                   <Grid>
@@ -109,6 +135,10 @@ class MailModal extends React.Component {
                       </Button>
                     }
                   ></GoogleMap>
+                  <Header as="h5">
+                    Recuerda que los precios son valores estimados, previos a
+                    revisión en el local.
+                  </Header>
                 </Grid.Column>
               </Grid>
             </Transition>

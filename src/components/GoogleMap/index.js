@@ -12,6 +12,7 @@ function GoogleMap({trigger}) {
               frameborder="0"
               height="400"
               width="600"
+              style={{border: 0}}
               allowfullscreen=""
             ></iframe>
           </Responsive>

@@ -129,19 +129,22 @@ class ProductForm extends React.Component {
       })
     }
   }
-  sheetsHook = ({name, email, intent}) => {
+  sheetsHook = ({name, email, phone, intent}) => {
     axios.get(
       'https://script.google.com/macros/s/AKfycbyAvPkKOaZMWUR1brTvP0uoj6pshztwfWxuS7iceXiLXMkL1xQ/exec',
       {
         params: {
           Nombre: name,
           Correo: email,
+          Teléfono: `+569${phone.replace(/\D/g, '')}`,
           Causa: intent,
           Equipo: this.formattedModel,
           Almacenamiento: `${this.state.storage} GB`,
           Fallas: this.state.failuresArray.join(', '),
           Razones: this.state.failureReasonsArray.join(', '),
           Diagnóstico: this.state.techServiceDiagnosis || '',
+          'Precio retoma': this.state.price,
+          'Precio reparación': this.state.totalRepairPrice,
         },
       },
     )

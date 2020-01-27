@@ -3,6 +3,7 @@ import {Link} from 'gatsby'
 import {Segment, Container, Grid, List, Header} from 'semantic-ui-react'
 import footerStyles from './footer.module.css'
 import {graphql, useStaticQuery} from 'gatsby'
+import {OutboundLink} from 'gatsby-plugin-google-analytics'
 
 const instagramLink = (
   <div>
@@ -47,19 +48,19 @@ const Footer = () => {
               <Header as="h4" content="Dr. Gadget" />
               <List>
                 <List.Item>
-                  <a href="https://drgadgetchile.cl/collections/iphones-reacondicionados">
+                  <OutboundLink href="https://drgadgetchile.cl/collections/iphones-reacondicionados">
                     Tienda
-                  </a>
+                  </OutboundLink>
                 </List.Item>
                 <List.Item>
-                  <a href="https://drgadgetchile.cl/pages/servicio-tecnico">
+                  <OutboundLink href="https://drgadgetchile.cl/pages/servicio-tecnico">
                     Servicio técnico
-                  </a>
+                  </OutboundLink>
                 </List.Item>
                 <List.Item>
-                  <a href="https://drgadgetchile.cl/collections/accesorios">
+                  <OutboundLink href="https://drgadgetchile.cl/collections/accesorios">
                     Accesorios
-                  </a>
+                  </OutboundLink>
                 </List.Item>
               </List>
             </Grid.Column>

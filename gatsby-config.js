@@ -44,7 +44,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
-        // trackingId: `ADD YOUR TRACKING ID HERE`,
+        trackingId: ` UA-157077196-1`,
       },
     },
     {
@@ -60,8 +60,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: 'Gatsby Shop App',
-        short_name: 'Shop App',
+        name: 'Dr. Gadget Chile',
+        short_name: 'Dr. Gadget',
         start_url: '/',
         background_color: '#ffffff',
         theme_color: '#ffffff',

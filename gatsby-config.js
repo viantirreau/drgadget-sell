@@ -8,7 +8,7 @@ module.exports = {
     author: 'Víctor Tirreau',
     description:
       'En Dr. Gadget compramos tu equipo. ¡Únete a la economía circular!',
-    siteUrl: 'https://retoma.drgadgetchile.cl',
+    siteUrl: 'https://retoma.tecnicallchile.cl',
   },
   // pathPrefix: '/gatsby-starter-ecommerce',
   plugins: [
@@ -60,68 +60,68 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: 'Dr. Gadget Chile',
-        short_name: 'Dr. Gadget',
+        name: 'Tecnicall Chile',
+        short_name: 'Tecnicall',
         start_url: '/',
         background_color: '#ffffff',
         theme_color: '#ffffff',
         display: 'minimal-ui',
-        icons: [
-          {
-            src: `/favicons/android-chrome-512x512.png`,
-            sizes: `512x512`,
-            type: `image/png`,
-          },
-          {
-            src: `/favicons/android-chrome-192x192.png`,
-            sizes: `192x192`,
-            type: `image/png`,
-          },
-          {
-            src: `/favicons/apple-touch-icon.png`,
-            sizes: `180x180`,
-            type: `image/png`,
-          },
-          {
-            src: `/favicons/favicon-16x16.png`,
-            sizes: `16x16`,
-            type: `image/png`,
-          },
-          {
-            src: `/favicons/favicon-32x32.png`,
-            sizes: `32x32`,
-            type: `image/png`,
-          },
-          {
-            src: `/favicons/mstile-70x70.png`,
-            sizes: `70x70`,
-            type: `image/png`,
-          },
-          {
-            src: `/favicons/mstile-144x144.png`,
-            sizes: `144x144`,
-            type: `image/png`,
-          },
-          {
-            src: `/favicons/mstile-150x150.png`,
-            sizes: `150x150`,
-            type: `image/png`,
-          },
-          {
-            src: `/favicons/mstile-310x150.png`,
-            sizes: `310x150`,
-            type: `image/png`,
-          },
-          {
-            src: `/favicons/mstile-310x310.png`,
-            sizes: `310x310`,
-            type: `image/png`,
-          },
-          {
-            src: `/favicons/safari-pinned-tab.svg`,
-            type: `image/svg`,
-          },
-        ],
+        // icons: [
+        //   {
+        //     src: `/favicons/android-chrome-512x512.png`,
+        //     sizes: `512x512`,
+        //     type: `image/png`,
+        //   },
+        //   {
+        //     src: `/favicons/android-chrome-192x192.png`,
+        //     sizes: `192x192`,
+        //     type: `image/png`,
+        //   },
+        //   {
+        //     src: `/favicons/apple-touch-icon.png`,
+        //     sizes: `180x180`,
+        //     type: `image/png`,
+        //   },
+        //   {
+        //     src: `/favicons/favicon-16x16.png`,
+        //     sizes: `16x16`,
+        //     type: `image/png`,
+        //   },
+        //   {
+        //     src: `/favicons/favicon-32x32.png`,
+        //     sizes: `32x32`,
+        //     type: `image/png`,
+        //   },
+        //   {
+        //     src: `/favicons/mstile-70x70.png`,
+        //     sizes: `70x70`,
+        //     type: `image/png`,
+        //   },
+        //   {
+        //     src: `/favicons/mstile-144x144.png`,
+        //     sizes: `144x144`,
+        //     type: `image/png`,
+        //   },
+        //   {
+        //     src: `/favicons/mstile-150x150.png`,
+        //     sizes: `150x150`,
+        //     type: `image/png`,
+        //   },
+        //   {
+        //     src: `/favicons/mstile-310x150.png`,
+        //     sizes: `310x150`,
+        //     type: `image/png`,
+        //   },
+        //   {
+        //     src: `/favicons/mstile-310x310.png`,
+        //     sizes: `310x310`,
+        //     type: `image/png`,
+        //   },
+        //   {
+        //     src: `/favicons/safari-pinned-tab.svg`,
+        //     type: `image/svg`,
+        //   },
+        // ],
       },
     },
     `gatsby-plugin-offline`,

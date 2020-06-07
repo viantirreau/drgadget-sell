@@ -1,13 +1,13 @@
-# DrGadget Chile
+# Tecnicall Chile
 
-DrGadget is a Chilean smartphone trading company. This site was made using Gatsby, inspired from [Gatsby Starter Ecommerce](https://parmsang.github.io/gatsby-starter-ecommerce/) by Parminder Sanghera.
+Tecnicall is a Chilean smartphone trading company. This site was made using Gatsby, inspired from [Gatsby Starter Ecommerce](https://parmsang.github.io/gatsby-starter-ecommerce/) by Parminder Sanghera.
 
-It is a static site that features all the used (and maybe damaged) products that DrGadget buys,
+It is a static site that features all the used (and maybe damaged) products that Tecnicall buys,
 with model selection and an extensive list of failures the device may have. It reports the final
 buying price, repair price and market price (when it is in an excellent condition) to let the customer
 choose the best alternative.
 
-A live version of the site is available [here](https://retoma.drgadgetchile.cl/).
+A live version of the site is available [here](https://retoma.tecnicallchile.cl/).
 
 ## Features
 
@@ -21,4 +21,4 @@ A live version of the site is available [here](https://retoma.drgadgetchile.cl/)
 - Automatic image loading for new products
 - Product categorization
 - Fully responsive
-- Google Drive form-data ingestion
+- Google Sheets webhook for form-data ingestion

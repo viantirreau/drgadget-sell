@@ -8,8 +8,8 @@ import {OutboundLink} from 'gatsby-plugin-google-analytics'
 const instagramLink = (
   <div>
     <span>Instagram </span>
-    <a href="https://instagram.com/drgadgetchile/" alt="instagram link">
-      @drgadgetchile
+    <a href="https://instagram.com/tecnicall.chile/" alt="instagram link">
+      @tecnicall.chile
     </a>
   </div>
 )
@@ -45,20 +45,20 @@ const Footer = () => {
         <Grid stackable>
           <Grid.Row>
             <Grid.Column width={4}>
-              <Header as="h4" content="Dr. Gadget" />
+              <Header as="h4" content="Tecnicall" />
               <List>
                 <List.Item>
-                  <OutboundLink href="https://drgadgetchile.cl/collections/iphones-reacondicionados">
+                  <OutboundLink href="https://tecnicallchile.cl/collections/iphone">
                     Tienda
                   </OutboundLink>
                 </List.Item>
                 <List.Item>
-                  <OutboundLink href="https://drgadgetchile.cl/pages/servicio-tecnico">
+                  <OutboundLink href="https://tecnicallchile.cl/pages/servicio-tecnico">
                     Servicio técnico
                   </OutboundLink>
                 </List.Item>
                 <List.Item>
-                  <OutboundLink href="https://drgadgetchile.cl/collections/accesorios">
+                  <OutboundLink href="https://tecnicallchile.cl/collections/accesorios">
                     Accesorios
                   </OutboundLink>
                 </List.Item>
@@ -81,9 +81,9 @@ const Footer = () => {
               </List>
             </Grid.Column>
             <Grid.Column width={7}>
-              <Header as="h4">Recicla | Reusa | Reduce</Header>
+              <Header as="h4">Recicla | Reutiliza | Reduce</Header>
               <p>
-                Dr. Gadget recicla, repara y vende aparatos tecnológicos tales
+                Tecnicall recicla, repara y vende aparatos tecnológicos tales
                 como notebooks, tablets y teléfonos móviles, para que así puedan
                 ser reutilizados y no se transformen en basura electrónica.
               </p>

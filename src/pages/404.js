@@ -14,7 +14,7 @@ const NotFoundPage = ({location}) => (
           size="large"
           src={img404}
           style={{margin: '0 auto'}}
-          alt="Dr Gadget - 404"
+          alt="Tecnicall - 404"
         />
         <p>No encontramos esa página :(</p>
         <Link to="/">Volver al inicio</Link>

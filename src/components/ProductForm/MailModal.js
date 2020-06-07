@@ -121,7 +121,8 @@ class MailModal extends React.Component {
                 <Grid.Column textAlign="center">
                   {this.steps}
                   <Header as="h4">
-                    Encuéntranos en Av. Nueva Providencia 2260, local 171.
+                    Encuéntranos en 32 Oriente 1470, entre 2-3 norte, Espacio
+                    Tue. Atendemos de lunes a sábado de 12 a 20 horas.
                   </Header>
                   <GoogleMap
                     trigger={

@@ -42,7 +42,7 @@ function PriceReport({
           as="h4"
           style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
         >
-          En Dr. Gadget
+          En Tecnicall
         </Header>
         <Header as="h2" style={{margin: '0', padding: '0', fontWeight: '400'}}>
           {formatCurrency(repairPrice)}
@@ -115,7 +115,7 @@ function PriceReport({
               as="h4"
               style={{marginTop: '0', paddingTop: '0', fontWeight: '400'}}
             >
-              En Dr. Gadget
+              En Tecnicall
             </Header>
             <Header
               as="h2"

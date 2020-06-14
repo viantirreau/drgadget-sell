@@ -4,10 +4,10 @@ require('dotenv').config({
 
 module.exports = {
   siteMetadata: {
-    title: 'Dr. Gadget Chile',
+    title: 'Tecnicall',
     author: 'Víctor Tirreau',
     description:
-      'En Dr. Gadget compramos tu equipo. ¡Únete a la economía circular!',
+      'En Tecnicall compramos tu equipo. ¡Únete a la economía circular!',
     siteUrl: 'https://retoma.tecnicallchile.cl',
   },
   // pathPrefix: '/gatsby-starter-ecommerce',
